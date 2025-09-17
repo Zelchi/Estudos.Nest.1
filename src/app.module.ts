@@ -18,4 +18,5 @@ import { PostgresConfigService } from './config/postgres.config.service';
         }),
     ],
 })
-export class AppModule {}
+
+export class AppModule { }

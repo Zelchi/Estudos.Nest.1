@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioController } from './usuario.controller';
 import { EmailEhUnicoValidator } from './validation/email-eh-unico.validator';
 import { UsuarioService } from './usuario.service';
-import { UsuarioEntity } from './usuario.entity';
+import { UsuarioEntity } from './entity/usuario.entity';
 
 @Module({
     imports: [TypeOrmModule.forFeature([UsuarioEntity])],
