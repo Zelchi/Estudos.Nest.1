@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class Migration0001758059354981 implements MigrationInterface {
-    name = 'Migration0001758059354981'
+export class Migration1758059354981 implements MigrationInterface {
+    name = 'Migration1758059354981'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "usuarios" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "nome" character varying(100) NOT NULL, "email" character varying(70) NOT NULL, "senha" character varying(255) NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP, CONSTRAINT "PK_d7281c63c176e152e4c531594a8" PRIMARY KEY ("id"))`);
@@ -20,5 +20,4 @@ export class Migration0001758059354981 implements MigrationInterface {
         await queryRunner.query(`DROP TABLE "produto_caracteristicas"`);
         await queryRunner.query(`DROP TABLE "usuarios"`);
     }
-
 }
