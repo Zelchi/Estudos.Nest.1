@@ -11,30 +11,29 @@ export class PedidoService {
         @InjectRepository(PedidoEntity)
         private readonly pedidoRepository: Repository<PedidoEntity>,
         @InjectRepository(UsuarioEntity)
-        private readonly usuarioRepository: Repository<UsuarioEntity>
+        private readonly usuarioRepository: Repository<UsuarioEntity>,
     ) { }
 
-    async pedidoPorUsuario(usuarioId: string) {
-        return await this.pedidoRepository.find({
+    async cadastraPedido(usuarioId: string) {
+        const usuario = await this.usuarioRepository.findOneBy({ id: usuarioId })
+        const pedidoEntity = new PedidoEntity();
+
+        pedidoEntity.valorTotal = 0;
+        pedidoEntity.status = StatusPedido.EM_PROCESSAMENTO
+        pedidoEntity.usuario = usuario
+
+        const pedidoCriado = await this.pedidoRepository.save(pedidoEntity)
+        return pedidoCriado
+    }
+
+    async obtemPedidosDeUsuario(usuarioId: string) {
+        return this.pedidoRepository.find({
             where: {
-                usuario: {
-                    id: usuarioId,
-                },
+                usuario: { id: usuarioId },
             },
             relations: {
                 usuario: true,
             },
         });
-    }
-
-    async cadastraPedido(usuarioId: string) {
-        const usuario = await this.usuarioRepository.findOneBy({ id: usuarioId });
-        const pedidoEntity = new PedidoEntity();
-
-        pedidoEntity.valorTotal = 0;
-        pedidoEntity.status = StatusPedido.EM_PREOCESSAMENTO;
-        pedidoEntity.usuario = usuario;
-
-        return await this.pedidoRepository.save(pedidoEntity);
     }
 }

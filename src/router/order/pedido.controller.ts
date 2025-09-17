@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     Body,
     Controller,
     Delete,
@@ -6,33 +7,30 @@ import {
     Param,
     Post,
     Put,
+    Query,
 } from '@nestjs/common';
 import { PedidoService } from './pedido.service';
 
-@Controller('/pedidos')
+@Controller('pedidos')
 export class PedidoController {
-    constructor(private pedidoService: PedidoService) { }
-
-    @Get()
-    async pedidoPorUsuario(@Param('usuarioId') usuarioId: string) {
-        const pedidos = await this.pedidoService.pedidoPorUsuario(usuarioId);
-
-        return {
-            pedidos,
-            messagem: 'pedidos do usuário retornados com sucesso',
-        };
-    }
+    constructor(private readonly pedidoService: PedidoService) { }
 
     @Post()
-    async cadastraPedido(@Param('usuarioId') usuarioId: string) {
+    async criaPedido(
+        @Query('usuarioId') usuarioId: string,
+    ) {
         const pedidoCriado = await this.pedidoService.cadastraPedido(
-            usuarioId,
-        );
+            usuarioId
+        )
+        return pedidoCriado
+    }
 
-        return {
-            pedido: pedidoCriado,
-            messagem: 'pedido criado com sucesso',
-        };
+    @Get()
+    async obtemPedidosDeUsuario(@Query('usuarioId') usuarioId: string) {
+        const pedidos = await this.pedidoService.obtemPedidosDeUsuario(usuarioId);
+
+
+        return pedidos;
     }
 
 }

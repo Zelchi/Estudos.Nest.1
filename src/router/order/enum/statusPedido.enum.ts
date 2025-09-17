@@ -1,5 +1,5 @@
 export enum StatusPedido {
-    EM_PREOCESSAMENTO = 'em_processamento',
+    EM_PROCESSAMENTO = 'em_processamento',
     PROCESSADO = 'processado',
     CANCELADO = 'cancelado'
 }
