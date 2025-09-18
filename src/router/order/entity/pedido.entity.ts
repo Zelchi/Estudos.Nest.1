@@ -8,14 +8,16 @@ import {
     Column,
     Entity,
     ManyToOne,
+    OneToMany,
 } from 'typeorm';
+import { ItemPedidoEntity } from './itemPedido.entity';
 
 @Entity({ name: 'pedidos' })
 export class PedidoEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ name: 'valor_total', nullable: false })
+    @Column({ name: 'valor_total', type: 'numeric', nullable: false })
     valorTotal: number;
 
     @Column({ name: 'status', enum: StatusPedido, nullable: false })
@@ -32,4 +34,7 @@ export class PedidoEntity {
 
     @ManyToOne(() => UsuarioEntity, (usuario) => usuario.pedidos)
     usuario: UsuarioEntity;
+
+    @OneToMany(() => ItemPedidoEntity, (itemPedido) => itemPedido.pedido, { cascade: true })
+    itensPedido: ItemPedidoEntity[]
 }

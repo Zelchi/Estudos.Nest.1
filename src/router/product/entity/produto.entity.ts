@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { ProdutoImagemEntity } from './produto-imagem.entity';
 import { ProdutoCaracteristicaEntity } from './produto-caracteristica.entity';
+import { ItemPedidoEntity } from '../../order/entity/itemPedido.entity';
 
 @Entity({ name: 'produtos' })
 export class ProdutoEntity {
@@ -18,7 +19,7 @@ export class ProdutoEntity {
     @Column({ name: 'nome', length: 100, nullable: false })
     nome: string;
 
-    @Column({ name: 'valor', nullable: false })
+    @Column({ name: 'valor', type: 'numeric', nullable: false })
     valor: number;
 
     @Column({ name: 'quantidade_disponivel', nullable: false })
@@ -52,4 +53,7 @@ export class ProdutoEntity {
         { cascade: true, eager: true },
     )
     caracteristicas: ProdutoCaracteristicaEntity[];
+
+    @OneToMany(() => ItemPedidoEntity, (itemPedido) => itemPedido.produto)
+    itensPedido: ItemPedidoEntity[]
 }
