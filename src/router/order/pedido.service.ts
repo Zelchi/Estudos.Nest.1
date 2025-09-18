@@ -7,6 +7,7 @@ import { StatusPedido } from './enum/statusPedido.enum';
 import { CriaPedidoDTO } from './dto/CriaPedido.dto';
 import { ItemPedidoEntity } from './entity/itemPedido.entity';
 import { ProdutoEntity } from '../product/entity/produto.entity';
+import { AtualizaPedidoDto } from './dto/AtualizaPedido.dto';
 import { In } from 'typeorm';
 
 @Injectable()
@@ -16,7 +17,7 @@ export class PedidoService {
         private readonly pedidoRepository: Repository<PedidoEntity>,
         @InjectRepository(UsuarioEntity)
         private readonly usuarioRepository: Repository<UsuarioEntity>,
-        @InjectRepository(UsuarioEntity)
+        @InjectRepository(ProdutoEntity)
         private readonly produtoRepository: Repository<ProdutoEntity>,
     ) { }
 
@@ -51,6 +52,14 @@ export class PedidoService {
 
         const pedidoCriado = await this.pedidoRepository.save(pedidoEntity)
         return pedidoCriado
+    }
+
+    async atualizaPedido(id: string, dto: AtualizaPedidoDto) {
+        const pedido = await this.pedidoRepository.findOneBy({ id });
+
+        Object.assign(pedido, dto);
+
+        return this.pedidoRepository.save(pedido);
     }
 
     async obtemPedidosDeUsuario(usuarioId: string) {
