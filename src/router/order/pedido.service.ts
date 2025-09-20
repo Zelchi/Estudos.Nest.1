@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PedidoEntity } from './entity/pedido.entity';
 import { UsuarioEntity } from '../user/entity/usuario.entity';
@@ -39,15 +39,15 @@ export class PedidoService {
 
         const itensPedidoEntidades = dadosDoPedido.itensPedido.map((itemPedido) => {
             const produtoRelacionado = produtosRelacionados.find((produto) => produto.id === itemPedido.produtoId);
+            
             if (!produtoRelacionado) throw new NotFoundException(`O produto com o ID: ${itemPedido.produtoId} não foi encontrada.`);
+            if (produtoRelacionado.quantidadeDisponivel < itemPedido.quantidade) throw new BadRequestException(`Quantidade indisponível`);
 
             const itemPedidoEntity = new ItemPedidoEntity();
-
             itemPedidoEntity.produto = produtoRelacionado;
             itemPedidoEntity.precoVenda = produtoRelacionado.valor;
             itemPedidoEntity.quantidade = itemPedido.quantidade;
             itemPedidoEntity.produto.quantidadeDisponivel -= itemPedido.quantidade;
-
             return itemPedidoEntity;
         });
 
@@ -66,7 +66,6 @@ export class PedidoService {
         const pedido = await this.pedidoRepository.findOneBy({ id });
         if (!pedido) throw new NotFoundException(`O pedido com o ID: ${id} não foi encontrado`);
         Object.assign(pedido, dto);
-
         return this.pedidoRepository.save(pedido);
     }
 
