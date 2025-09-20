@@ -14,7 +14,7 @@ import { ProdutoService } from './produto.service';
 
 @Controller('produtos')
 export class ProdutoController {
-    constructor(private readonly produtoService: ProdutoService) {}
+    constructor(private readonly produtoService: ProdutoService) { }
 
     @Post()
     async criaNovo(@Body() dadosProduto: CriaProdutoDTO) {
