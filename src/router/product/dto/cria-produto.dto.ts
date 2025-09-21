@@ -47,7 +47,7 @@ export class CriaProdutoDTO {
 
     @IsString()
     @IsNotEmpty({ message: 'Nome do produto não pode ser vazio' })
-    batata: string;
+    nome: string;
 
     @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
     @Min(1, { message: 'O valor precisa ser maior que zero' })
