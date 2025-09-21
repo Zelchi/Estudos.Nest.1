@@ -5,6 +5,7 @@ import { UsuarioEntity } from './entity/usuario.entity';
 import { Repository } from 'typeorm';
 import { AtualizaUsuarioDTO } from './dto/atualiza-usuario.dto';
 import { CriaUsuarioDTO } from './dto/cria-usuario.dto';
+import { ValidaUsuarioDTO } from './dto/valida-usuario.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -16,6 +17,15 @@ export class UsuarioService {
     async criaUsuario(dadosDoUsuario: CriaUsuarioDTO) {
         const usuarioEntity = Object.assign(new UsuarioEntity, dadosDoUsuario)
         return this.usuarioRepository.save(usuarioEntity);
+    }
+
+    async validaUsuario(dadosDoUsuario: ValidaUsuarioDTO) {
+        const usuario = await this.usuarioRepository.findOne({
+            where: { email: dadosDoUsuario.email },
+        });
+
+        if (usuario?.senha !== dadosDoUsuario.senha) throw new BadRequestException("Credenciais inválidas");
+        return usuario;
     }
 
     async listUsuarios() {

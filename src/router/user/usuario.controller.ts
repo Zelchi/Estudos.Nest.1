@@ -11,10 +11,11 @@ import { AtualizaUsuarioDTO } from './dto/atualiza-usuario.dto';
 import { CriaUsuarioDTO } from './dto/cria-usuario.dto';
 import { ListaUsuarioDTO } from './dto/lista-usuario.dto';
 import { UsuarioService } from './usuario.service';
+import { ValidaUsuarioDTO } from './dto/valida-usuario.dto';
 
 @Controller('/usuarios')
 export class UsuarioController {
-    constructor(private usuarioService: UsuarioService) {}
+    constructor(private usuarioService: UsuarioService) { }
 
     @Post()
     async criaUsuario(@Body() dadosDoUsuario: CriaUsuarioDTO) {
@@ -25,6 +26,15 @@ export class UsuarioController {
         return {
             usuario: new ListaUsuarioDTO(usuarioCriado.id, usuarioCriado.nome),
             messagem: 'usuário criado com sucesso',
+        };
+    }
+
+    @Post('/login')
+    async login(@Body() dadosDoUsuario: ValidaUsuarioDTO) {
+        const usuario = await this.usuarioService.validaUsuario(dadosDoUsuario);
+        return {
+            usuario: new ListaUsuarioDTO(usuario.id, usuario.nome),
+            messagem: 'Login realizado com sucesso',
         };
     }
 
