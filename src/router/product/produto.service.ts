@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ListaProdutoDTO } from './dto/ListaProduto.dto';
+import { ListaProdutoDTO } from './dto/lista-produto.dto';
 import { ProdutoEntity } from './entity/produto.entity';
 import { Repository } from 'typeorm';
-import { AtualizaProdutoDTO } from './dto/AtualizaProduto.dto';
-import { CriaProdutoDTO } from './dto/CriaProduto.dto';
+import { AtualizaProdutoDTO } from './dto/atualiza-produto.dto';
+import { CriaProdutoDTO } from './dto/cria-produto.dto';
 
 @Injectable()
 export class ProdutoService {
@@ -16,13 +16,7 @@ export class ProdutoService {
     async criaProduto(dadosProduto: CriaProdutoDTO) {
         const produtoEntity = new ProdutoEntity();
 
-        produtoEntity.nome = dadosProduto.nome;
-        produtoEntity.valor = dadosProduto.valor;
-        produtoEntity.quantidadeDisponivel = dadosProduto.quantidadeDisponivel;
-        produtoEntity.descricao = dadosProduto.descricao;
-        produtoEntity.categoria = dadosProduto.categoria;
-        produtoEntity.caracteristicas = dadosProduto.caracteristicas;
-        produtoEntity.imagens = dadosProduto.imagens;
+        Object.assign(produtoEntity, dadosProduto);
 
         return this.produtoRepository.save(produtoEntity);
     }

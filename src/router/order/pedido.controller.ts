@@ -8,8 +8,8 @@ import {
     Query,
 } from '@nestjs/common';
 import { PedidoService } from './pedido.service';
-import { CriaPedidoDTO } from './dto/CriaPedido.dto';
-import { AtualizaPedidoDto } from './dto/AtualizaPedido.dto';
+import { CriaPedidoDTO } from './dto/cria-pedido.dto';
+import { AtualizaPedidoDto } from './dto/atualiza-pedido.dto';
 
 @Controller('pedidos')
 export class PedidoController {

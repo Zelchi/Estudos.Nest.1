@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioController } from './usuario.controller';
-import { EmailEhUnicoValidator } from './validation/email-eh-unico.validator';
+import { UniqueEmailValidator } from './validator/email.validator';
 import { UsuarioService } from './usuario.service';
 import { UsuarioEntity } from './entity/usuario.entity';
 
 @Module({
     imports: [TypeOrmModule.forFeature([UsuarioEntity])],
     controllers: [UsuarioController],
-    providers: [UsuarioService, EmailEhUnicoValidator],
+    providers: [UsuarioService, UniqueEmailValidator],
 })
-export class UsuarioModule {}
+export class UsuarioModule { }

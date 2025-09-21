@@ -3,11 +3,11 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { PedidoEntity } from './entity/pedido.entity';
 import { UsuarioEntity } from '../user/entity/usuario.entity';
-import { StatusPedido } from './enum/statusPedido.enum';
-import { CriaPedidoDTO } from './dto/CriaPedido.dto';
-import { ItemPedidoEntity } from './entity/itemPedido.entity';
+import { StatusPedido } from './enum/status-pedido.enum';
+import { CriaPedidoDTO } from './dto/cria-pedido.dto';
+import { ItemPedidoEntity } from './entity/item-pedido.entity';
 import { ProdutoEntity } from '../product/entity/produto.entity';
-import { AtualizaPedidoDto } from './dto/AtualizaPedido.dto';
+import { AtualizaPedidoDto } from './dto/atualiza-pedido.dto';
 import { In } from 'typeorm';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class PedidoService {
 
         const itensPedidoEntidades = dadosDoPedido.itensPedido.map((itemPedido) => {
             const produtoRelacionado = produtosRelacionados.find((produto) => produto.id === itemPedido.produtoId);
-            
+
             if (!produtoRelacionado) throw new NotFoundException(`O produto com o ID: ${itemPedido.produtoId} não foi encontrada.`);
             if (produtoRelacionado.quantidadeDisponivel < itemPedido.quantidade) throw new BadRequestException(`Quantidade indisponível`);
 

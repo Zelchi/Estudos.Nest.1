@@ -1,5 +1,5 @@
 import { UsuarioEntity } from '../../user/entity/usuario.entity';
-import { StatusPedido } from '../enum/statusPedido.enum';
+import { StatusPedido } from '../enum/status-pedido.enum';
 import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
@@ -10,7 +10,7 @@ import {
     ManyToOne,
     OneToMany,
 } from 'typeorm';
-import { ItemPedidoEntity } from './itemPedido.entity';
+import { ItemPedidoEntity } from './item-pedido.entity';
 
 @Entity({ name: 'pedidos' })
 export class PedidoEntity {

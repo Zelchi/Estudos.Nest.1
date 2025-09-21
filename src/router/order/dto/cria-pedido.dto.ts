@@ -1,4 +1,4 @@
-import { ItemPedidoDTO } from './ItemPedido.dto';
+import { ItemPedidoDTO } from './item-pedido.dto';
 import { Type } from 'class-transformer';
 import { ArrayMinSize, IsArray, IsInt, IsUUID, ValidateNested } from 'class-validator';
 

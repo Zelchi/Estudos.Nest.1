@@ -9,10 +9,11 @@ import { UsuarioService } from '../usuario.service';
 
 @Injectable()
 @ValidatorConstraint({ async: true })
-export class EmailEhUnicoValidator implements ValidatorConstraintInterface {
-    constructor(private usuarioService: UsuarioService) {}
-
-    async validate(value: any): Promise<boolean> {
+export class UniqueEmailValidator implements ValidatorConstraintInterface {
+    constructor(
+        private usuarioService: UsuarioService
+    ) { };
+    async validate(value: string): Promise<boolean> {
         const usuarioComEmailExiste = await this.usuarioService.buscaPorEmail(
             value,
         );
@@ -20,14 +21,14 @@ export class EmailEhUnicoValidator implements ValidatorConstraintInterface {
     }
 }
 
-export const EmailEhUnico = (opcoesDeValidacao: ValidationOptions) => {
-    return (objeto: object, propriedade: string) => {
+export const UniqueEmail = (options: ValidationOptions) => {
+    return (objeto: object, propertyName: string) => {
         registerDecorator({
             target: objeto.constructor,
-            propertyName: propriedade,
-            options: opcoesDeValidacao,
+            propertyName,
+            options,
             constraints: [],
-            validator: EmailEhUnicoValidator,
+            validator: UniqueEmailValidator,
         });
     };
 };

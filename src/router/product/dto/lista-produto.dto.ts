@@ -14,5 +14,5 @@ export class ListaProdutoDTO {
         readonly nome: string,
         readonly caracteristicas: ListaCaracteristicaProdutoDTO[],
         readonly imagens: ListaImagemProdutoDTO[],
-    ) {}
+    ) { }
 }

@@ -8,8 +8,8 @@ import {
     Put,
 } from '@nestjs/common';
 
-import { AtualizaProdutoDTO } from './dto/AtualizaProduto.dto';
-import { CriaProdutoDTO } from './dto/CriaProduto.dto';
+import { AtualizaProdutoDTO } from './dto/atualiza-produto.dto';
+import { CriaProdutoDTO } from './dto/cria-produto.dto';
 import { ProdutoService } from './produto.service';
 
 @Controller('produtos')
