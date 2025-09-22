@@ -15,8 +15,7 @@ export class UsuarioService {
     ) { }
 
     async criaUsuario(dadosDoUsuario: CriaUsuarioDTO) {
-        const usuarioEntity = Object.assign(new UsuarioEntity, dadosDoUsuario)
-        return this.usuarioRepository.save(usuarioEntity);
+        return this.usuarioRepository.save(UsuarioEntity.From(dadosDoUsuario));
     }
 
     async validaUsuario(dadosDoUsuario: ValidaUsuarioDTO) {
@@ -47,8 +46,7 @@ export class UsuarioService {
     async atualizaUsuario(id: string, novosDados: AtualizaUsuarioDTO) {
         const usuario = await this.usuarioRepository.findOneBy({ id });
         if (!usuario) throw new NotFoundException("Usuario não encontrado!");
-        Object.assign(usuario, novosDados);
-        await this.usuarioRepository.update(id, novosDados);
+        await this.usuarioRepository.update(id, { ...usuario, ...novosDados });
     }
 
     async deletaUsuario(id: string) {

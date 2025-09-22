@@ -11,6 +11,11 @@ import {
 
 @Entity({ name: 'usuarios' })
 export class UsuarioEntity {
+    
+    public static From(dto: Partial<UsuarioEntity>): UsuarioEntity {
+        return { ...new UsuarioEntity(), ...dto };
+    }
+
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
