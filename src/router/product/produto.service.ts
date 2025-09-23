@@ -20,7 +20,6 @@ export class ProdutoService {
 
         return this.produtoRepository.save(produtoEntity);
     }
-
     async listProdutos() {
         const produtosSalvos = await this.produtoRepository.find({
             relations: {
@@ -39,7 +38,18 @@ export class ProdutoService {
         );
         return produtosLista;
     }
-
+    async listProduto(id: string) {
+        if (!id || id.length !== 36) throw new BadRequestException('ID inválido');
+        const produto = await this.produtoRepository.findOne({
+            where: { id },
+            relations: {
+                imagens: true,
+                caracteristicas: true,
+            },
+        });
+        if (!produto) throw new NotFoundException('Produto não encontrado');
+        return produto;
+    }
     async atualizaProduto(id: string, novosDados: AtualizaProdutoDTO) {
         if (!id || id.length !== 36) throw new BadRequestException('ID inválido');
         const entityName = await this.produtoRepository.findOneBy({ id });
@@ -47,7 +57,6 @@ export class ProdutoService {
         Object.assign(entityName, novosDados);
         return this.produtoRepository.save(entityName);
     }
-
     async deletaProduto(id: string) {
         await this.produtoRepository.delete(id);
     }

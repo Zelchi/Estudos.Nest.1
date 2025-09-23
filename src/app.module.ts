@@ -7,6 +7,7 @@ import { UsuarioModule } from './router/user/usuario.module';
 import { PedidoModule } from './router/order/pedido.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpFilterException } from './utils/filter.http';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import { HttpFilterException } from './utils/filter.http';
             useClass: PostgresConfigService,
             inject: [PostgresConfigService],
         }),
+        CacheModule.register({ isGlobal: true, ttl: 10000 })
     ],
     providers: [
         {

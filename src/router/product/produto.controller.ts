@@ -6,11 +6,12 @@ import {
     Param,
     Post,
     Put,
+    UseInterceptors,
 } from '@nestjs/common';
-
 import { AtualizaProdutoDTO } from './dto/atualiza-produto.dto';
 import { CriaProdutoDTO } from './dto/cria-produto.dto';
 import { ProdutoService } from './produto.service';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('produtos')
 export class ProdutoController {
@@ -31,6 +32,13 @@ export class ProdutoController {
     @Get()
     async listaTodos() {
         return this.produtoService.listProdutos();
+    }
+
+    @Get('/:id')
+    @UseInterceptors(CacheInterceptor)
+    async listaUm(@Param('id') id: string) {
+        console.log('Buscando no banco de dados...');
+        return this.produtoService.listProduto(id);
     }
 
     @Put('/:id')
