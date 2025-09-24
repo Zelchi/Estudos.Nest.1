@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, Matches, MinLength } from 'class-validator';
 import { UniqueEmail } from '../validator/email.validator';
 
 export class CriaUsuarioDTO {
@@ -9,6 +9,9 @@ export class CriaUsuarioDTO {
     @UniqueEmail({ message: 'Já existe um usuário com este e-mail' })
     email: string;
 
-    @MinLength(6, { message: 'A senha precisa ter pelo menos 6 caracteres' })
+    @Matches(
+        /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{6,20})/, {
+        message: 'A senha precisa ter letras maiúsculas, minúsculas, números e caracteres especiais e deve ter entre 6 e 20 caracteres',
+    })
     senha: string;
 }

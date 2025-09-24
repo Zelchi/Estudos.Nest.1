@@ -12,15 +12,19 @@ import { CriaUsuarioDTO } from './dto/cria-usuario.dto';
 import { ListaUsuarioDTO } from './dto/lista-usuario.dto';
 import { UsuarioService } from './usuario.service';
 import { ValidaUsuarioDTO } from './dto/valida-usuario.dto';
+import { HashPipe } from '../../utils/hash.pipe';
 
 @Controller('/usuarios')
 export class UsuarioController {
     constructor(private usuarioService: UsuarioService) { }
 
     @Post()
-    async criaUsuario(@Body() dadosDoUsuario: CriaUsuarioDTO) {
+    async criaUsuario(
+        @Body() { senha, ...dadosDoUsuario }: CriaUsuarioDTO,
+        @Body('senha', HashPipe) hashSenha: string,
+    ) {
         const usuarioCriado = await this.usuarioService.criaUsuario(
-            dadosDoUsuario,
+            { ...dadosDoUsuario, senha: hashSenha },
         );
 
         return {

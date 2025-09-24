@@ -15,6 +15,7 @@ export class UsuarioService {
     ) { }
 
     async criaUsuario(dadosDoUsuario: CriaUsuarioDTO) {
+        console.log(dadosDoUsuario);
         return this.usuarioRepository.save(UsuarioEntity.From(dadosDoUsuario));
     }
 
