@@ -35,10 +35,10 @@ export class UsuarioController {
 
     @Post('/login')
     async login(@Body() dadosDoUsuario: ValidaUsuarioDTO) {
-        const usuario = await this.usuarioService.validaUsuario(dadosDoUsuario);
+        const token = await this.usuarioService.validaUsuario(dadosDoUsuario);
         return {
-            usuario: new ListaUsuarioDTO(usuario.id, usuario.nome),
             messagem: 'Login realizado com sucesso',
+            token,
         };
     }
 

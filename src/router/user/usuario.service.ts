@@ -7,12 +7,14 @@ import { AtualizaUsuarioDTO } from './dto/atualiza-usuario.dto';
 import { CriaUsuarioDTO } from './dto/cria-usuario.dto';
 import { ValidaUsuarioDTO } from './dto/valida-usuario.dto';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsuarioService {
     constructor(
         @InjectRepository(UsuarioEntity)
         private readonly usuarioRepository: Repository<UsuarioEntity>,
+        private readonly jwtService: JwtService,
     ) { }
 
     async criaUsuario(dadosDoUsuario: CriaUsuarioDTO) {
@@ -27,7 +29,9 @@ export class UsuarioService {
         if (!usuario) throw new NotFoundException("O email ou a senha estão incorretos!");
         const usuarioFound = await bcrypt.compare(dadosDoUsuario.senha, usuario?.senha);
         if (!usuarioFound) throw new UnauthorizedException("O email ou a senha estão incorretos!");
-        return usuario;
+        const payload = { sub: usuario.id, email: usuario.email };
+
+        return await this.jwtService.signAsync(payload)
     }
 
     async listUsuarios() {
