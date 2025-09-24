@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ListaUsuarioDTO } from './dto/lista-usuario.dto';
 import { UsuarioEntity } from './entity/usuario.entity';
@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { AtualizaUsuarioDTO } from './dto/atualiza-usuario.dto';
 import { CriaUsuarioDTO } from './dto/cria-usuario.dto';
 import { ValidaUsuarioDTO } from './dto/valida-usuario.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsuarioService {
@@ -23,8 +24,9 @@ export class UsuarioService {
         const usuario = await this.usuarioRepository.findOne({
             where: { email: dadosDoUsuario.email },
         });
-
-        if (usuario?.senha !== dadosDoUsuario.senha) throw new BadRequestException("Credenciais inválidas");
+        if (!usuario) throw new NotFoundException("O email ou a senha estão incorretos!");
+        const usuarioFound = await bcrypt.compare(dadosDoUsuario.senha, usuario?.senha);
+        if (!usuarioFound) throw new UnauthorizedException("O email ou a senha estão incorretos!");
         return usuario;
     }
 
